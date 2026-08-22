@@ -1,0 +1,11 @@
+const express=require('express');
+const { getBooks, createBook, updateBook, deleteBook, getOneBook } = require('../Controllers/BookController');
+const router=express.Router();
+
+router.get('/', getBooks)
+router.post('/' , createBook)
+router.put('/:id' , updateBook)
+router.delete('/:id', deleteBook)
+router.get('/:id',getOneBook)
+
+module.exports=router;
