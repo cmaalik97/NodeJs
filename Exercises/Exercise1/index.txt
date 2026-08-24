@@ -1,0 +1,74 @@
+const express = require('express');
+
+const app = express();
+const PORT = 5000;
+
+app.use(express.json());
+
+let Books = [
+    { id: 1, title: "Atomic Habits", auth: "James Clear" },
+    { id: 2, title: "Deep Work", auth: "Cal Newport" }
+];
+
+// GET all books
+app.get('/Books', (req, res) => {
+    res.json(Books);
+});
+
+// GET one book
+app.get('/Books/:id', (req, res) => {
+    const book = Books.find(b => b.id == req.params.id);
+
+    if (!book) {
+        return res.status(404).json("Book not found");
+    }
+
+    res.json(book);
+});
+
+// POST
+app.post('/Books', (req, res) => {
+
+    const newBook = {
+        id: Books.length + 1,
+        title: req.body.title,
+        auth: req.body.auth
+    };
+
+    Books.push(newBook);
+
+    res.status(201).json(newBook);
+});
+
+// PUT
+app.put('/Books/:id', (req, res) => {
+
+    const book = Books.find(b => b.id == req.params.id);
+
+    if (!book) {
+        return res.status(404).json("Book not found");
+    }
+
+    book.title = req.body.title;
+    book.auth = req.body.auth;
+
+    res.json(book);
+});
+
+// DELETE
+app.delete('/Books/:id', (req, res) => {
+
+    const book = Books.find(b => b.id == req.params.id);
+
+    if (!book) {
+        return res.status(404).json("Book not found");
+    }
+
+    Books = Books.filter(b => b.id != req.params.id);
+
+    res.json("Book deleted");
+});
+
+app.listen(PORT, () => {
+    console.log(`Server is running at http://localhost:${PORT}`);
+});

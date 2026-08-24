@@ -1,0 +1,45 @@
+export const authorize = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.student.role)) {
+      return res.status(403).json({
+        message: `Access denied: Requires one of [${roles.join(', ')}]`
+      });
+    }
+    next();
+  };
+};
+
+
+
+--------------------------------------
+export const globalError=(err , req , res , next)=>{
+   
+    const status = err.statusCode || 500;
+
+
+    res.status(status).json({
+    success: false,
+    message: err.message || 'Something went wrong',
+    status
+  });
+}
+--------------------------------------------
+import jwt from 'jsonwebtoken';
+import Student from '../Model/Student.js';
+
+export const protect= async (req, res , next)=>{
+     const token = req.headers.authorization?.split(' ')[1];
+     if (!token) return res.status(401).json({ message: 'No token provided' });
+
+     try {
+         const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.student = await Student.findById(decoded.id).select('-password');
+        next();
+        
+     } catch (error) {
+          res.status(401).json({ message: 'Invalid or expired token' });
+        
+     }
+    
+  
+}
