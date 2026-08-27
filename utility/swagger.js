@@ -1,4 +1,5 @@
 import swaggerJSDoc from 'swagger-jsdoc';
+import { process } from 'zod/v4/core';
 
 const options = {
   definition: {
@@ -10,7 +11,7 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:5000'
+        url: process.env.NODE_ENV== "development" ? 'http://localhost:5000':  "https://nodejs-x9n9.onrender.com"
       }
     ],
     components: {
