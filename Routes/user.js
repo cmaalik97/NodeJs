@@ -47,7 +47,7 @@ const router = express.Router();
  *             - admin
  *           example: user
  *
- *     CreateUser:
+ *     RegisterUser:
  *       type: object
  *       required:
  *         - name
@@ -99,7 +99,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /users:
+ * /:
  *   get:
  *     summary: Get all users
  *     tags: [Users]
@@ -118,7 +118,7 @@ router.get('/', getUsers);
 
 /**
  * @swagger
- * /users/users/{id}:
+ * /users/{id}:
  *   get:
  *     summary: Get one user by ID
  *     tags: [Users]
@@ -145,7 +145,7 @@ router.get('/users/:id', getOneUser);
 
 /**
  * @swagger
- * /users/users/{id}:
+ * /users/{id}:
  *   put:
  *     summary: Update a user
  *     tags: [Users]
@@ -162,7 +162,7 @@ router.get('/users/:id', getOneUser);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/CreateUser'
+ *             $ref: '#/components/schemas/RegisterUser'
  *     responses:
  *       200:
  *         description: User updated successfully
@@ -176,7 +176,7 @@ router.put('/users/:id', updatUser);
 
 /**
  * @swagger
- * /users:
+ * /:
  *   post:
  *     summary: Create a user
  *     tags: [Users]
@@ -185,7 +185,7 @@ router.put('/users/:id', updatUser);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/CreateUser'
+ *             $ref: '#/components/schemas/RegisterUser'
  *     responses:
  *       201:
  *         description: User created successfully
@@ -194,14 +194,14 @@ router.put('/users/:id', updatUser);
  *             schema:
  *               $ref: '#/components/schemas/User'
  *       400:
- *         description: Validation error
+ *         description: Invalid request
  */
 router.post('/', postUser);
 
 
 /**
  * @swagger
- * /users/users/{id}:
+ * /users/{id}:
  *   delete:
  *     summary: Delete a user
  *     tags: [Users]
@@ -226,7 +226,7 @@ router.delete('/users/:id', deleteUser);
 
 /**
  * @swagger
- * /users/create:
+ * /create:
  *   post:
  *     summary: Register a new user
  *     tags: [Users]
@@ -235,7 +235,7 @@ router.delete('/users/:id', deleteUser);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/CreateUser'
+ *             $ref: '#/components/schemas/RegisterUser'
  *     responses:
  *       201:
  *         description: User registered successfully
@@ -244,14 +244,14 @@ router.delete('/users/:id', deleteUser);
  *             schema:
  *               $ref: '#/components/schemas/AuthResponse'
  *       400:
- *         description: Email already exists or validation error
+ *         description: Email already exists or validation failed
  */
 router.post('/create', validate(createUserSchema), register);
 
 
 /**
  * @swagger
- * /users/login:
+ * /login:
  *   post:
  *     summary: Login user
  *     tags: [Users]
@@ -276,7 +276,7 @@ router.post('/login', login);
 
 /**
  * @swagger
- * /users/profile:
+ * /profile:
  *   get:
  *     summary: Get logged-in user's profile
  *     tags: [Users]
